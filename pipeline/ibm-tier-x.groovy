@@ -87,4 +87,5 @@ node(nodeName) {
                            "container_image": "repositoryname"]
         tierLevel = "tier1"
         sharedLib.sendEmail(testResults, artifactDetails, tierLevel.capitalize())
+    }
 }
