@@ -20,7 +20,7 @@ node(nodeName) {
             }
             checkout([
                 $class: 'GitSCM',
-                branches: [[name: '*/master']],
+                branches: [[name: 'refs/remotes/origin/send_email_ibm']],
                 doGenerateSubmoduleConfigurations: false,
                 extensions: [[
                     $class: 'CloneOption',
