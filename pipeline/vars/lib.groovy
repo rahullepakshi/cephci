@@ -334,7 +334,7 @@ def sendEmail(def testResults, def artifactDetails, def tierLevel) {
         mimeType: 'text/html',
         subject: "${subject}",
         body: "${body}",
-        from: "cephci@redhat.com",
+        from: "anrao@redhat.com",
         to: "anrao@redhat.com"
     )
     println "mail sent"
