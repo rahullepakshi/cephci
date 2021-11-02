@@ -329,8 +329,6 @@ def sendEmail(def testResults, def artifactDetails, def tierLevel) {
     }
 
     def subject = "${tierLevel} test report status of ${artifactDetails.version} is ${status}"
-    println subject
-    println body
 
     emailext (
         mimeType: 'text/html',
@@ -339,6 +337,7 @@ def sendEmail(def testResults, def artifactDetails, def tierLevel) {
         from: "cephci@redhat.com",
         to: "anrao@redhat.com"
     )
+    println "mail sent"
 }
 
 def sendGChatNotification(def testResults, def tierLevel) {
