@@ -329,6 +329,8 @@ def sendEmail(def testResults, def artifactDetails, def tierLevel) {
     }
 
     def subject = "${tierLevel} test report status of ${artifactDetails.version} is ${status}"
+    println subject
+    println body
 
     emailext (
         mimeType: 'text/html',
