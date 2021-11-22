@@ -22,7 +22,7 @@ tests:
               ceph_stable_rh_storage: True
               fetch_directory: ~/fetch
               copy_admin_key: true
-              dashboard_enabled: True
+              dashboard_enabled: False
               dashboard_admin_user: admin
               dashboard_admin_password: p@ssw0rd
               grafana_admin_user: admin
