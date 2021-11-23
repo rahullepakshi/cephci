@@ -973,3 +973,19 @@ class FsUtils(object):
         byte_quota = out.read().decode()
         quota_dict["bytes"] = int(byte_quota)
         return quota_dict
+
+    def subvolume_authorize(self, client, vol_name, subvol_name, client_name, **kwargs):
+        """
+        Create client with permissions on cephfs subvolume
+        Args:
+            client: client node
+            vol_name: Cephfs volume name
+            subvol_name: Cephfs subvolume name
+            client_name: Name of client to be created
+            **kwargs:
+                extra_params : subvolumegroup name, access level etc.
+        """
+        command = f"ceph fs subvolume authorize {vol_name} {subvol_name} {client_name}"
+        if kwargs.get("extra_params"):
+            command += f" {kwargs.get('extra_params')}"
+            client.exec_command(sudo=True, cmd=command)

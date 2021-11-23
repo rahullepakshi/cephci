@@ -39,7 +39,7 @@ def run(ceph_cluster, **kw):
         1. ceph fs snapshot rm <vol_name> <subvol_name> snap_name [--group_name <subvol_group_name>]
         2. ceph fs subvolume rm <vol_name> <subvol_name> [--group_name <subvol_group_name>]
         3. ceph fs subvolumegroup rm <vol_name> <group_name>
-        """
+    """
     try:
         fs_util = FsUtils(ceph_cluster)
         config = kw.get("config")
@@ -90,8 +90,8 @@ def run(ceph_cluster, **kw):
         client1.exec_command(
             sudo=True,
             cmd=f"python3 /home/cephuser/smallfile/smallfile_cli.py --operation create --threads 10 --file-size 400 "
-                f"--files 100 --files-per-dir 10 --dirs-per-dir 2 --top "
-                f"{kernel_mounting_dir_1}",
+            f"--files 100 --files-per-dir 10 --dirs-per-dir 2 --top "
+            f"{kernel_mounting_dir_1}",
             long_running=True,
         )
         snapshot = {
@@ -118,9 +118,7 @@ def run(ceph_cluster, **kw):
 
     finally:
         log.info("Clean Up in progess")
-        rmclone_list = [
-            {"vol_name": default_fs, "subvol_name": "clone_status_1"}
-        ]
+        rmclone_list = [{"vol_name": default_fs, "subvol_name": "clone_status_1"}]
         for clone_vol in rmclone_list:
             fs_util.remove_subvolume(client1, **clone_vol)
         fs_util.remove_snapshot(client1, **snapshot)
