@@ -674,10 +674,10 @@ def email_results(test_result):
         send_to_cephci (optional [bool]): send to cephci@redhat.com as well as user email
     Returns: None
     """
-    cfg = get_cephci_config().get("email")
+    sender = "cephci@redhat.com"
+    cfg = get_cephci_config().get("email", {"address": sender})
     if not cfg:
         return
-    sender = "cephci@redhat.com"
     recipients = []
     address = cfg.get("address")
     send_to_cephci = test_result.get("send_to_cephci", False)
@@ -845,6 +845,7 @@ def get_cephci_config():
     try:
         with open(cfg_file, "r") as yml:
             cfg = yaml.safe_load(yml)
+        print(cfg)
     except IOError:
         log.error(
             "Please create ~/.cephci.yaml from the cephci.yaml.template. "

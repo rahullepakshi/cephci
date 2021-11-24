@@ -407,7 +407,7 @@ def fetchStages(def scriptArg, def tierLevel, def testResults, def rhcephversion
     def scriptPath = "${env.WORKSPACE}/pipeline/scripts/${majorVersion}/${minorVersion}/${tierLevel}/"
 
     def testStages = [:]
-    def scriptFiles = sh (returnStdout: true, script: "ls ${scriptPath}*.sh | cat")
+    def scriptFiles = sh (returnStdout: true, script: "ls ${scriptPath}test-cephfs-core-features.sh | cat")
     if (! scriptFiles ) {
         return testStages
     }
@@ -497,7 +497,7 @@ def uploadBuildRecipe(def recipeMap){
         checkout([
             $class: 'GitSCM',
             branches: [[
-                name: '*/master'
+                name: 'refs/remotes/origin/fix_index_html'
             ]],
             extensions: [
                 [$class: 'RelativeTargetDirectory', relativeTargetDir: recipeDir],
