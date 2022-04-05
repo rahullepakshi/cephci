@@ -64,19 +64,19 @@ tests:
           skip-monitoring-stack: true
           orphan-initial-daemons: true
           registry-json: registry.redhat.io
-          custom_image: true
+          custom_repo: cdn
           mon-ip: node1
           fsid: f64f341c-655d-11eb-8778-fa163e914bcc
           config:
             mgr:
               mgr/cephadm/container_image_grafana:
-                registry.redhat.io/rhceph/rhceph-5-dashboard-rhel8:5-27
+                registry.redhat.io/rhceph/rhceph-5-dashboard-rhel8:latest
               mgr/cephadm/container_image_alertmanager:
-                openshift4/ose-prometheus-alertmanager:v4.9.0-202110182323.p0.git.579e3c6.assembly.stream
+                registry.redhat.io/openshift4/ose-prometheus-alertmanager:v4.6
               mgr/cephadm/container_image_prometheus:
-                registry.redhat.io/openshift4/ose-prometheus:v4.9.0-202110182323.p0.git.3197fa7.assembly.stream
+                registry.redhat.io/openshift4/ose-prometheus:v4.6
               mgr/cephadm/container_image_node_exporter:
-                openshift4/ose-prometheus-node-exporter:v4.6.0-202107070256.p0.git.c63b8f3
+                registry.redhat.io/openshift4/ose-prometheus-node-exporter:v4.6
       destroy-cluster: false
       abort-on-fail: true
   - test:

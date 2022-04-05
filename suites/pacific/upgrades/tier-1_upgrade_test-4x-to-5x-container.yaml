@@ -100,8 +100,13 @@ tests:
            module: test_ansible_upgrade.py
            config:
              build: '5.x'
+             use_cdn: True
              ansi_config:
-               ceph_origin: distro
+               ceph_origin: repository
+               ceph_repository_type: cdn
+               ceph_docker_image: "rhceph/rhceph-5-rhel8"
+               ceph_docker_image_tag: "latest"
+               ceph_docker_registry: "registry.redhat.io"
                ceph_stable_release: pacific
                ceph_repository: rhcs
                ceph_rhcs_version: 5
