@@ -10,6 +10,10 @@ def run(**kw):
     ceph_nodes = kw.get("ceph_nodes")
     config = kw.get("config")
     build = config.get("rhbuild")
+    build_type = config.get("build_type")
+    ceph_docker_registry = config.get("ceph_docker_registry")
+    ceph_docker_image = config.get("ceph_docker_image")
+    ceph_docker_image_tag = config.get("ceph_docker_image_tag")
     installer_node = None
     ansible_dir = "/usr/share/ceph-ansible"
     playbook = "switch-from-non-containerized-to-containerized-ceph-daemons.yml"
@@ -32,6 +36,16 @@ def run(**kw):
         )
 
     else:
+        if build_type not in ["released"]:
+            installer_node.exec_command(
+                sudo=True,
+                cmd='echo -e "ceph_docker_registry: {ceph_docker_registry}\nceph_docker_image: {ceph_docker_image}\nceph_docker_image_tag: {ceph_docker_image_tag}" >> /usr/share/ceph-ansible/group_vars/all.yml'.format(
+                    ceph_docker_registry=ceph_docker_registry,
+                    ceph_docker_image=ceph_docker_image,
+                    ceph_docker_image_tag=ceph_docker_image_tag,
+                ),
+            )
+
         rc = installer_node.exec_command(
             cmd="cd {ansible_dir};ansible-playbook -vvvv"
             " infrastructure-playbooks/{playbook} -e ireallymeanit=yes -i hosts".format(
