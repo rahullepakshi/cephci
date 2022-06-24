@@ -178,6 +178,8 @@ class OSD(ApplyMixin, Orch):
         base_cmd.append("rm")
         osd_id = config["pos_args"][0]
         base_cmd.append(str(osd_id))
+        if config.get("args"):
+            base_cmd.append(config["args"][0])
         self.shell(args=base_cmd)
 
         check_osd_id_dict = {
