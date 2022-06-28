@@ -246,7 +246,7 @@ def setup_subscription_manager(
                 password_ = config_["stage_credentials"]["password"]
                 pool_id = "8a82d25480dceec60180dcf7d4d20d78"
 
-            command += f"--baseurl=https://cdn.redhat.com --username={username_}"
+            command += f"--baseurl=https://cdn.stage.redhat.com --username={username_}"
             command += f" --password={password_}"
 
             ceph.exec_command(cmd=command, timeout=720, long_running=True)
