@@ -418,8 +418,10 @@ def executeTestSuite(
             println "Not performing cleanup of cluster."
         }
     }
-
-    return [ "result": rc, "instances-name": vmPrefix]
+    println "exit status: ${rc}"
+    retValue = ["result": rc, "instances-name": vmPrefix]
+    println "return value: ${retValue}"
+    return retValue
 }
 
 def configureRpPreProc(

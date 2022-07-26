@@ -1,6 +1,12 @@
 // Workflow to execute tests
 def sharedLib
-def retVal
+def test
+def run_type = "RHCEPH-test-executor run"
+def rhcephVersion= "${params.RHCS_Build}"
+def phase = "${params.Build}"
+def group = "${params.Group}-"
+def suite = "${params.Suite}"
+def testResults = [:]
 
 def getCLI(){
     /*
@@ -104,26 +110,41 @@ node("rhel-8-medium || ceph-qe-ci"){
     }
 
     stage('Execute groovy script'){
-        script{
-            def cleanupOnSuccess = true
-            def cleanupOnFailure = true
-            if(params.Destroy_Cluster == 'Destroy when suite/s pass'){
-                cleanupOnFailure = false
-            } else if(params.Destroy_Cluster == 'Do not destroy'){
-                cleanupOnSuccess = false
-                cleanupOnFailure = false
-            }
-            def cli = getCLI()
-            retVal = sharedLib.executeTestSuite(cli, cleanupOnSuccess, cleanupOnFailure)
+        def cleanupOnSuccess = true
+        def cleanupOnFailure = true
+        if(params.Destroy_Cluster == 'Destroy when suite/s pass'){
+            cleanupOnFailure = false
+        } else if(params.Destroy_Cluster == 'Do not destroy'){
+            cleanupOnSuccess = false
+            cleanupOnFailure = false
         }
+        def cli = getCLI()
+        println("test1")
+        test = sharedLib.executeTestSuite(cli, cleanupOnSuccess, cleanupOnFailure)
+        println("test2")
+        println("test: ${test}")
+        dummy = test["result"]
+        test.put("status", dummy)
+        println("test: ${test}")
+        println("test3")
     }
     stage('Publish Results'){
-        testResults = ["${params.Suite}": retVal["result"]]
+        testResults = [suite : test]
+        println(testResults)
         def jobUserId
         wrap([$class: 'BuildUser']) {
             jobUserId = "${BUILD_USER_ID}@redhat.com"
         }
-        def artifactDetails = buildArtifactDetails(sharedLib)
-        sharedLib.sendEmail(testResults, artifactDetails, "Async-${params.Group}", jobUserId)
+        def (majorVersion, minorVersion) = rhcephVersion.tokenize(".")
+        def releaseContent = sharedLib.readFromReleaseFile(majorVersion, minorVersion, lockFlag=false)
+        sharedLib.sendEmail(
+                run_type,
+                testResults,
+                sharedLib.buildArtifactsDetails(releaseContent, rhcephVersion, phase),
+                group,
+                suite,
+                jobUserId
+        )
+        currentBuild.description = "Run by ${BUILD_USER_ID}"
     }
 }
