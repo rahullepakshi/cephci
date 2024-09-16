@@ -1,0 +1,197 @@
+globals:
+  - ceph-cluster:
+      name: ceph
+      vm-size: ci.standard.xl
+      node1:
+        role:
+          - _admin
+          - installer
+          - mon
+          - mgr
+      node2:
+        role:
+          - mon
+          - mgr
+      node3:
+        role:
+          - nvmeof-gw
+      node4:
+        role:
+          - nvmeof-gw
+      node5:
+        role:
+          - mds
+          - osd
+          - rgw
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node6:
+        role:
+          - mon
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node7:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node8:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node9:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node10:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node11:
+        role:
+          - nvmeof-gw
+      node12:
+        role:
+          - nvmeof-gw
+      node13:
+        role:
+          - nvmeof-gw
+      node14:
+        role:
+          - nvmeof-gw
+      node15:
+        role:
+          - nvmeof-gw
+      node16:
+        role:
+          - nvmeof-gw
+      node17:
+        role:
+          - nvmeof-gw
+      node18:
+        role:
+          - nvmeof-gw
+      node19:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node20:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node21:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node22:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node23:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node24:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node25:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node26:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node27:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node28:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node29:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node30:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node31:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node32:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node33:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node34:
+        role:
+          - osd
+          - nvmeof-gw
+        no-of-volumes: 4
+        disk-size: 20
+      node35:
+        role:
+          - client
+      node36:
+        role:
+          - client
+      node37:
+        role:
+          - client
+      node38:
+        role:
+          - client
+      node39:
+        role:
+          - osd
+      node40:
+        role:
+          - osd
