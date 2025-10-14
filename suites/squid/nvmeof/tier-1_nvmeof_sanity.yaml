@@ -95,16 +95,51 @@ tests:
               pos_args:
                 - rbd
                 - gw_group1
-      desc: NVMeoF Gateway deployment using cephadm
+      desc: NVMeoF Gateway deployment using cephadm via labels
       destroy-cluster: false
       do-not-skip-tc: true
       module: test_cephadm.py
       name: deploy nvmeof gateway
 
   - test:
+      abort-on-fail: false
+      config:
+         command: remove
+         service: nvmeof
+         args:
+           service_name: nvmeof.rbd.gw_group1
+           verify: true
+      desc: Remove nvmeof service on GW nodes deployed via labels
+      destroy-cluster: false
+      do-not-skip-tc: true
+      module: test_orch.py
+      name: Delete nvmeof gateway
+
+  - test:
+      abort-on-fail: false
+      config:
+        verify_cluster_health: true
+        steps:
+          - config:
+              command: shell
+              args:
+                - ceph config set mon mon_allow_pool_delete true
+          - config:
+              command: shell
+              args:
+                - ceph osd pool rm rbd rbd --yes-i-really-really-mean-it
+      desc: Delete NVMeOF metadata pool from ceph cluster
+      destroy-cluster: false
+      do-not-skip-tc: true
+      module: test_cephadm.py
+      name: Delete NVMeOF metadata pool
+
+  - test:
       abort-on-fail: true
       config:
-        gw_node: node6
+        gw_node:
+           - node6
+           - node5
         rbd_pool: rbd
         gw_group: gw_group1
         do_not_create_image: true

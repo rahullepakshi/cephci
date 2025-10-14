@@ -22,6 +22,7 @@ globals:
         role:
           - mds
           - osd
+          - nvmeof-gw
         no-of-volumes: 4
         disk-size: 20
       node5:
