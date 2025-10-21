@@ -167,7 +167,7 @@ tests:
             allow_host: "*"
         initiators:                             # Configure Initiators with all pre-req
           - subnqn: nqn.2016-06.io.spdk:cnode1
-            listener_port: 5001
+            listener_port: 4420
             node: node10
       desc: E2E-Test NVMEoF Gateway on dedicated node and Run IOs on targets
       destroy-cluster: false
