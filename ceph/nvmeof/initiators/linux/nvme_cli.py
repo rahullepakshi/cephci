@@ -23,6 +23,15 @@ class NVMeCLI(Cli):
         for cmd in configure_cmds:
             self.execute(*cmd)
 
+    def configure_hostnqn(self):
+        """Generate hostnqn and hostid for rhel10 initiator"""
+        configure_cmds = [
+            ("nvme gen-hostnqn > /etc/nvme/hostnqn", True),
+            ("uuidgen > /etc/nvme/hostid", True),
+        ]
+        for cmd in configure_cmds:
+            self.execute(*cmd)
+
     def gen_dhchap_key(self, **kwargs):
         """Generates the TLS key.
         Example::
@@ -174,7 +183,7 @@ class NVMeCLI(Cli):
         else:
             cmd = (
                 f"nvme resv-register {device} --namespace-id {nsid} "
-                f"{config_dict_to_string(kwargs)} -v"
+                f"{config_dict_to_string(kwargs)} -p 3 -v"
             )
         return self.execute(cmd=cmd, sudo=True)
 
@@ -217,7 +226,7 @@ class NVMeCLI(Cli):
         if not (device and nsid):
             raise ValueError("device and namespace-id must both be provided")
 
-        cmd = f"nvme resv-report {device} --namespace-id {nsid} -o json"
+        cmd = f"nvme resv-report {device} --namespace-id {nsid} -e -v -o json"
         return self.execute(cmd=cmd, sudo=True)
 
     def release_reservation(self, **kwargs):

@@ -8,6 +8,8 @@ class Initiator(NVMeCLI):
         super().__init__(node)
         self.node = node
         self.configure()
+        if self.distro_version() == "10.0":  # BZ#2415011
+            self.configure_hostnqn()
 
     def initiator_nqn(self):
         out, _ = self.node.exec_command(cmd="nvme show-hostnqn")
