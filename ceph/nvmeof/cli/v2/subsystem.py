@@ -28,3 +28,9 @@ class Subsystem:
 
     def list(self, **kwargs):
         return self.base.run_nvme_cli(self.name, "list", **kwargs)
+
+    def add_network(self, **kwargs):
+        return self.base.run_nvme_cli(self.name, "add_network", **kwargs)
+
+    def delete_network(self, **kwargs):
+        return self.base.run_nvme_cli(self.name, "delete_network", **kwargs)
