@@ -138,12 +138,35 @@ def configure_subsystems(nvme_service, ceph_cluster=None, subsystem_config=None)
                 args["port"] = sub_cfg.get("listener_port")
             if sub_cfg.get("secure_listener"):
                 args["secure_listeners"] = sub_cfg.get("secure_listener")
-            # Prefer suite-defined network-mask; else derive from GW primary IPs
-            args["network-mask"] = (
-                sub_cfg.get("network_mask")
-                or sub_cfg.get("network-mask")
-                or get_network_mask(nvme_service.gateways)
-            )
+            # Spec listener_network_masks and a subsystem network-mask are
+            # mutually exclusive. skip_network_mask creates a subsystem with
+            # neither, so a later set_use_group_config_network_masks can opt in.
+            use_group_masks = sub_cfg.get("use_group_config_network_masks")
+            if isinstance(use_group_masks, str):
+                use_group_masks = use_group_masks.strip().lower() in (
+                    "true",
+                    "1",
+                    "yes",
+                )
+            else:
+                use_group_masks = bool(use_group_masks)
+            explicit_mask = sub_cfg.get("network_mask") or sub_cfg.get("network-mask")
+            if use_group_masks and explicit_mask:
+                raise ValueError(
+                    f"{nqn}: network_mask and use_group_config_network_masks "
+                    "are mutually exclusive"
+                )
+            if use_group_masks:
+                args["use-group-config-network-masks"] = True
+            elif sub_cfg.get("skip_network_mask"):
+                LOG.info(
+                    "Subsystem %s created with no network mask (skip_network_mask)",
+                    nqn,
+                )
+            else:
+                args["network-mask"] = explicit_mask or get_network_mask(
+                    nvme_service.gateways
+                )
 
         try:
             gateway.subsystem.add(**{"args": args})

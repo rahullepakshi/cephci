@@ -13,8 +13,18 @@ placement:
 {%- if spec['placement']['label'] -%}{{ nlt }}label: {{ spec['placement']['label'] }}{%- endif -%}
 {%- if spec['placement']['host_pattern'] -%}{{ nlt }}host_pattern: '{{ spec['placement']['host_pattern'] }}'{%- endif %}
 {%+ if spec['spec'] -%}
-spec:{%+ for key, value in spec['spec'].items() -%}{%- if key not in cert_list -%}{{ nlt }}{{ key }}: {{ value }}{% else %}{{ nlt }}{{ key }}: |
-    {{ value | indent(4) }}{%- endif -%}
+spec:{%+ for key, value in spec['spec'].items() -%}
+{%- if key in cert_list -%}{{ nlt }}{{ key }}: |
+    {{ value | indent(4) }}
+{%- elif key == 'listener_network_masks' -%}
+{%- if value is string -%}{{ nlt }}{{ key }}: {{ value }}
+{%- elif value -%}{{ nlt }}{{ key }}:
+{%- for item in value -%}{{ nlt }}  - {{ item }}
+{%- endfor -%}
+{%- else -%}{{ nlt }}{{ key }}: []
+{%- endif -%}
+{%- else -%}{{ nlt }}{{ key }}: {{ value }}
+{%- endif -%}
 {% endfor %}
 {% endif %}
 

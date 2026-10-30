@@ -10,6 +10,18 @@ class Subsystem:
     def add(self, **kwargs):
         return self.base.run_nvme_cli(self.name, "add", **kwargs)
 
+    def set_use_group_config_network_masks(self, **kwargs):
+        """Opt a subsystem into or out of spec listener_network_masks.
+
+        Container CLI::
+
+            subsystem set_use_group_config_network_masks -n <nqn>
+                --use-group-config-network-masks true|false
+        """
+        return self.base.run_nvme_cli(
+            self.name, "set_use_group_config_network_masks", **kwargs
+        )
+
     def add_network(self, **kwargs):
         """Add a network mask for auto-listeners on the subsystem."""
         return self.base.run_nvme_cli(self.name, "add_network", **kwargs)

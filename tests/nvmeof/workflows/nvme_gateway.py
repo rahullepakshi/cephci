@@ -296,6 +296,37 @@ class NVMeGatewayBase:
             LOG.warning(f"No cnc_* keys found in gateway conf on {self.node.hostname}")
         return merged
 
+    def read_ceph_nvmeof_conf(self, conf_paths=None):
+        """Return ``ceph-nvmeof.conf`` text from the gateway container or host.
+
+        Cephadm renders orch spec ``listener_network_masks`` into the
+        ``[gateway]`` section as a comma-separated list.
+        """
+        paths = conf_paths or (
+            "/etc/ceph/ceph-nvmeof.conf",
+            "/src/ceph-nvmeof.conf",
+        )
+        chunks = []
+        container = self.get_nvme_container()
+        for path in paths:
+            cmd = f"[ -r '{path}' ] && cat '{path}'"
+            out, _ = exec_command_on_container(
+                self.node, container, cmd, sudo=True, check_ec=False
+            )
+            if out and out.strip():
+                chunks.append(out)
+        if not chunks:
+            host_cmd = (
+                "find /var/lib/ceph -name ceph-nvmeof.conf 2>/dev/null | "
+                "while read -r f; do "
+                '[ -s "$f" ] && echo "=== $f ===" && cat "$f"; '
+                "done"
+            )
+            out, _ = self.node.exec_command(cmd=host_cmd, sudo=True, check_ec=False)
+            if out and out.strip():
+                chunks.append(out)
+        return "\n".join(chunks)
+
 
 class NVMeGatewayV1(NVMeGatewayBase, NVMeGWCLI):
     """NVMe Gateway (V1 CLI backend)."""
